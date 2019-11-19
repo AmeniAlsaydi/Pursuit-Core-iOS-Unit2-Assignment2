@@ -31,6 +31,14 @@ class ViewController: UIViewController {
     func loadData() {
        seasons = GOTEpisode.getSeasons()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let detailVC = segue.destination as? DetailController, let indexPath = tableView.indexPathForSelectedRow else { return }
+        
+        detailVC.episode = seasons[indexPath.section][indexPath.row]
+    }
+    
+    
 }
 
 extension ViewController: UITableViewDataSource {
@@ -43,7 +51,7 @@ extension ViewController: UITableViewDataSource {
        let episode = seasons[indexPath.section][indexPath.row]
         
         if episode.season % 2 == 0 {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "leftCell", for: indexPath) as? LeftCell // or rightCell ... need to alternate between the two (using module) for each section 
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "leftCell", for: indexPath) as? LeftCell
             else {
              fatalError("could not dequeue a LeftCell")
          }
